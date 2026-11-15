@@ -16,7 +16,7 @@ const rationalOverrides: Record<string, string> = {
 const defaultReviews: Review[] = [
   {
     id: 'aa34115e-6706-4b9c-9c61-54505ff4da1e',
-    name: 'Sarah Wijaya',
+    name: 'Aditya Subagja',
     rating: 5,
     comment: rationalOverrides['aa34115e-6706-4b9c-9c61-54505ff4da1e'],
     is_approved: true,
@@ -24,7 +24,7 @@ const defaultReviews: Review[] = [
   },
   {
     id: '5286aa7e-53e0-447a-9c73-9194ab6cca74',
-    name: 'Michael Tan',
+    name: 'Randi Taufik',
     rating: 5,
     comment: rationalOverrides['5286aa7e-53e0-447a-9c73-9194ab6cca74'],
     is_approved: true,
@@ -32,7 +32,7 @@ const defaultReviews: Review[] = [
   },
   {
     id: 'ad6dd4a3-f324-4c1c-89d5-4724bb41cf90',
-    name: 'Linda Hartono',
+    name: 'Reka Sapitri',
     rating: 4,
     comment: rationalOverrides['ad6dd4a3-f324-4c1c-89d5-4724bb41cf90'],
     is_approved: true,

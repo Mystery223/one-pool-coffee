@@ -3,7 +3,7 @@ import { MapPin, Phone, Mail, Clock, Instagram, Facebook, Twitter, ExternalLink 
 const contactItems = [
   { icon: MapPin, title: 'Lokasi Kafe', text: 'Jl.Raya Leuwigoong No. 58, Desa/Kelurahan Leuwigoong, Kec. Leuwigoong, Kab. Garut, Jawa Barat 44192', href: 'https://maps.app.goo.gl/x9fGnJ1axZM1LoiS7' },
   { icon: Phone, title: 'Telepon & WhatsApp', text: '+62 815-6321-8948', href: 'https://wa.me/6281563218948?text=Halo%20One%20Pool%20and%20Cafe%2C%20saya%20ingin%20tanya%20informasi%20meja%20dan%20menu' },
-  { icon: Mail, title: 'Email', text: 'halo@onepoolandcoffee.id', href: 'mailto:halo@onepoolandcafe.id' },
+  { icon: Mail, title: 'Email', text: 'projectag87@gmail.com', href: 'mailto:projectag87@gmail.com' },
   { icon: Clock, title: 'Jam Operasional', text: 'Senin – Minggu: 08:00 – 22:00 WIB' },
 ];
 
