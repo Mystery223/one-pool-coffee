@@ -6,13 +6,11 @@ const navLinks = [
   { label: 'Tentang', href: '#about' },
   { label: 'Menu', href: '#menu' },
   { label: 'Galeri', href: '#gallery' },
-  { label: 'Reservasi', href: '#reservation' },
   { label: 'Kontak', href: '#contact' },
 ];
 
 function scrollToSection(href: string) {
-  const id = href.replace('#', '');
-  const el = document.getElementById(id);
+  const el = document.getElementById(href.replace('#', ''));
   if (el) el.scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -33,12 +31,12 @@ function NavBrand() {
     <a
       href="#home"
       onClick={(e) => { e.preventDefault(); scrollToSection('#home'); }}
-      className="flex flex-col items-center group md:static absolute left-1/2 -translate-x-1/2 pointer-events-auto"
+      className="flex items-center gap-2.5 group absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 pointer-events-auto"
     >
-      <div className="w-11 h-11 rounded-full border border-gold-500/50 overflow-hidden flex items-center justify-center group-hover:border-gold-400 transition-colors bg-void-900/60 shadow-sm">
+      <div className="w-10 h-10 rounded-full border border-gold-500/50 overflow-hidden flex items-center justify-center group-hover:border-gold-400 transition-colors bg-void-900/60 shadow-sm shrink-0">
         <img src="/logo.jpeg" alt="Logo One Pool and Coffee" className="w-full h-full object-cover" />
       </div>
-      <span className="font-display text-sm text-parchment-100 tracking-widest mt-1.5 leading-none">
+      <span className="font-display text-xs sm:text-sm text-parchment-100 tracking-widest whitespace-nowrap leading-none">
         ONE POOL & COFFEE
       </span>
     </a>
@@ -81,10 +79,10 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
   );
 }
 
-function DesktopLinks({ start, end }: { start: number; end: number }) {
+function DesktopLinks() {
   return (
-    <ul className="hidden md:flex items-center gap-8">
-      {navLinks.slice(start, end).map((link) => (
+    <ul className="flex items-center gap-7">
+      {navLinks.map((link) => (
         <li key={link.href}>
           <NavLink href={link.href} label={link.label} />
         </li>
@@ -93,27 +91,20 @@ function DesktopLinks({ start, end }: { start: number; end: number }) {
   );
 }
 
-function DesktopRight() {
-  return (
-    <div className="hidden md:flex items-center gap-8">
-      <DesktopLinks start={3} end={6} />
-      <a
-        href="#reservation"
-        onClick={(e) => { e.preventDefault(); scrollToSection('#reservation'); }}
-        className="px-5 py-2.5 border border-gold-500 text-gold-300 text-xs tracking-widest uppercase font-semibold hover:bg-gold-500 hover:text-void-950 transition-all duration-200"
-      >
-        Reservasi
-      </a>
-    </div>
-  );
-}
-
 function DesktopNav({ onToggle, open }: { onToggle: () => void; open: boolean }) {
   return (
     <div className="relative flex items-center justify-between h-20">
-      <DesktopLinks start={0} end={3} />
       <NavBrand />
-      <DesktopRight />
+      <div className="hidden md:flex items-center gap-8">
+        <DesktopLinks />
+        <a
+          href="#reservation"
+          onClick={(e) => { e.preventDefault(); scrollToSection('#reservation'); }}
+          className="px-5 py-2.5 border border-gold-500 text-gold-300 text-xs tracking-widest uppercase font-semibold hover:bg-gold-500 hover:text-void-950 transition-all duration-200"
+        >
+          Reservasi
+        </a>
+      </div>
       <button
         onClick={onToggle}
         className="md:hidden ml-auto text-parchment-100 p-2.5 rounded hover:bg-void-900 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center z-10"

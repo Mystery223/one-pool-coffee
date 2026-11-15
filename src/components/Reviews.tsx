@@ -1,248 +1,159 @@
 import { useState, useEffect } from 'react';
-import { supabase, type Review } from '@/lib/supabase';
-import { Star, Loader2, Send } from 'lucide-react';
+import { Star, ExternalLink } from 'lucide-react';
 
-const rationalOverrides: Record<string, string> = {
-  'aa34115e-6706-4b9c-9c61-54505ff4da1e':
-    'Tempatnya asyik buat main billiard bareng teman. Meja billiard-nya terawat dan kopinya enak, pas banget buat santai sore.',
-  '5286aa7e-53e0-447a-9c73-9194ab6cca74':
-    'Kopi Susu Kekinian dan Summer Mojito-nya mantap! Suasananya nyaman, pelayanannya ramah, cocok buat nongkrong lama.',
-  'ad6dd4a3-f324-4c1c-89d5-4724bb41cf90':
-    'Pilihan minumannya variatif dan segar, terutama Berry Pink-nya. Tempatnya bersih dan meja billiard-nya nyaman dimainkan.',
-  '14e6d063-bf55-417a-baed-b0a08f7289f2':
-    'Tempat billiard sekaligus kafe terbaik di area Leuwigoong. Parkirnya luas, WiFi kencang, dan harga minumannya sangat bersahabat.',
-};
+interface CustomerReview {
+  id: string;
+  name: string;
+  role: string;
+  rating: number;
+  comment: string;
+}
 
-const defaultReviews: Review[] = [
+const reviewsData: CustomerReview[] = [
   {
-    id: 'aa34115e-6706-4b9c-9c61-54505ff4da1e',
+    id: '1',
     name: 'Aditya Subagja',
+    role: 'Pemain Billiard Rutin',
     rating: 5,
-    comment: rationalOverrides['aa34115e-6706-4b9c-9c61-54505ff4da1e'],
-    is_approved: true,
-    created_at: '2026-10-23T15:23:38.052467+00:00',
+    comment: 'Tempatnya asyik buat main billiard bareng teman. Meja billiard-nya terawat mulus dan kopinya mantap, pas buat santai sore.',
   },
   {
-    id: '5286aa7e-53e0-447a-9c73-9194ab6cca74',
+    id: '2',
     name: 'Randi Taufik',
+    role: 'Pengunjung Kafe',
     rating: 5,
-    comment: rationalOverrides['5286aa7e-53e0-447a-9c73-9194ab6cca74'],
-    is_approved: true,
-    created_at: '2026-10-23T15:23:38.052467+00:00',
+    comment: 'Kopi Susu Gula Aren dan Summer Mojito-nya segar banget! Suasana adem, pelayanannya ramah, cocok buat nongkrong lama.',
   },
   {
-    id: 'ad6dd4a3-f324-4c1c-89d5-4724bb41cf90',
+    id: '3',
     name: 'Reka Sapitri',
-    rating: 4,
-    comment: rationalOverrides['ad6dd4a3-f324-4c1c-89d5-4724bb41cf90'],
-    is_approved: true,
-    created_at: '2026-10-23T15:23:38.052467+00:00',
+    role: 'Pecinta Mocktail',
+    rating: 5,
+    comment: 'Pilihan minumannya variatif dan segar, terutama Berry Pink dan camilan French Fries-nya. Tempatnya bersih dan nyaman.',
   },
   {
-    id: '14e6d063-bf55-417a-baed-b0a08f7289f2',
+    id: '4',
     name: 'David Pratama',
+    role: 'Komunitas Billiard Garut',
     rating: 5,
-    comment: rationalOverrides['14e6d063-bf55-417a-baed-b0a08f7289f2'],
-    is_approved: true,
-    created_at: '2026-10-23T15:23:38.052467+00:00',
+    comment: 'Tempat billiard sekaligus kafe terbaik di area Leuwigoong. Parkirnya luas, WiFi kencang, dan harga menunya bersahabat.',
   },
 ];
 
+const MAPS_URL = 'https://maps.app.goo.gl/x9fGnJ1axZM1LoiS7';
+
 function ReviewsHeader() {
   return (
-    <div className="text-center mb-12">
+    <div className="text-center mb-10">
       <h2 className="font-display text-3xl sm:text-5xl text-parchment-100 font-bold">
         Ulasan Pengunjung
       </h2>
       <p className="mt-3 text-parchment-200 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
-        Pendapat jujur dari pengunjung tentang permainan billiard, rasa kopi, dan kenyamanan di One Pool and Coffee.
+        Pengalaman nyata dari pengunjung tentang kualitas meja billiard, racikan menu, dan kenyamanan di One Pool and Coffee.
       </p>
     </div>
   );
 }
 
-function StarRating({ rating, setRating }: { rating: number; setRating?: (n: number) => void }) {
+function ReviewCardHeader() {
   return (
-    <div className="flex gap-1">
-      {[1, 2, 3, 4, 5].map((n) => (
+    <div className="flex items-center gap-1 mb-4">
+      {[1, 2, 3, 4, 5].map((s) => (
+        <Star key={s} className="w-4 h-4 fill-gold-400 text-gold-400" />
+      ))}
+    </div>
+  );
+}
+
+function ReviewCard({ item }: { item: CustomerReview }) {
+  return (
+    <div className="bg-void-950 p-6 sm:p-7 rounded-lg border border-void-800/80 flex flex-col justify-between shadow-md h-full">
+      <div>
+        <ReviewCardHeader />
+        <p className="text-parchment-200 text-sm sm:text-base leading-relaxed italic font-display">"{item.comment}"</p>
+      </div>
+      <div className="mt-5 pt-4 border-t border-void-800 flex items-center justify-between">
+        <div>
+          <p className="text-xs tracking-wider uppercase font-semibold text-parchment-100">{item.name}</p>
+          <p className="text-[11px] text-parchment-300 mt-0.5">{item.role}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ReviewDots({ current, total, onSelect }: { current: number; total: number; onSelect: (i: number) => void }) {
+  return (
+    <div className="flex items-center justify-center gap-2 mt-5">
+      {Array.from({ length: total }).map((_, i) => (
         <button
-          key={n}
-          type="button"
-          disabled={!setRating}
-          onClick={() => setRating?.(n)}
-          className={`p-1.5 min-h-[40px] min-w-[40px] flex items-center justify-center ${
-            setRating ? 'cursor-pointer hover:scale-110' : 'cursor-default'
-          } transition-transform`}
-          aria-label={`${n} bintang`}
-        >
-          <Star className={`w-4 h-4 ${n <= rating ? 'fill-gold-400 text-gold-400' : 'text-void-700'}`} />
-        </button>
+          key={i}
+          onClick={() => onSelect(i)}
+          aria-label={`Ulasan ${i + 1}`}
+          className={`h-1.5 rounded-full transition-all duration-300 ${
+            current === i ? 'w-6 bg-gold-400' : 'w-2 bg-void-700 hover:bg-void-600'
+          }`}
+        />
       ))}
     </div>
   );
 }
 
-function ReviewCard({ review }: { review: Review }) {
-  return (
-    <div className="bg-void-950 p-6 sm:p-8 rounded border border-void-800/80 flex flex-col justify-between shadow-md">
-      <div>
-        <StarRating rating={review.rating} />
-        <p className="mt-4 text-parchment-200 text-sm sm:text-base leading-relaxed italic font-display">
-          "{review.comment}"
-        </p>
-      </div>
-      <div className="mt-6 pt-4 border-t border-void-800 flex items-center justify-between">
-        <p className="text-xs tracking-wider uppercase font-semibold text-gold-400">{review.name}</p>
-        <span className="text-xs text-parchment-300">Pengunjung Terverifikasi</span>
-      </div>
-    </div>
-  );
-}
-
-interface ReviewFormProps {
-  form: { name: string; rating: number; comment: string };
-  status: 'idle' | 'loading' | 'success' | 'error';
-  setForm: React.Dispatch<React.SetStateAction<{ name: string; rating: number; comment: string }>>;
-  onSubmit: (e: React.FormEvent) => void;
-  onCancel: () => void;
-}
-
-function ReviewFormInputs({ form, setForm }: { form: { name: string; rating: number; comment: string }; setForm: React.Dispatch<React.SetStateAction<{ name: string; rating: number; comment: string }>> }) {
-  return (
-    <div className="space-y-4">
-      <div>
-        <label className="text-xs uppercase tracking-wider text-parchment-200 font-medium mb-1.5 block">Nama Lengkap</label>
-        <input type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Nama kamu" className="w-full px-4 py-2.5 bg-void-900 border border-void-700 rounded text-parchment-100 placeholder:text-parchment-400/50 text-sm focus:border-gold-500" />
-      </div>
-      <div>
-        <label className="text-xs uppercase tracking-wider text-parchment-200 font-medium mb-1.5 block">Rating</label>
-        <StarRating rating={form.rating} setRating={(r) => setForm({ ...form, rating: r })} />
-      </div>
-      <div>
-        <label className="text-xs uppercase tracking-wider text-parchment-200 font-medium mb-1.5 block">Ulasan</label>
-        <textarea rows={3} value={form.comment} onChange={(e) => setForm({ ...form, comment: e.target.value })} placeholder="Ceritakan pengalaman rasa dan suasananya..." className="w-full px-4 py-2.5 bg-void-900 border border-void-700 rounded text-parchment-100 placeholder:text-parchment-400/50 text-sm focus:border-gold-500 resize-none" />
-      </div>
-    </div>
-  );
-}
-
-function ReviewForm({ form, status, setForm, onSubmit, onCancel }: ReviewFormProps) {
-  return (
-    <form onSubmit={onSubmit} className="max-w-lg mx-auto bg-void-950 border border-void-700/80 p-6 sm:p-8 rounded space-y-5 text-left shadow-xl animate-fade-in">
-      <h3 className="font-display text-xl text-parchment-100 font-semibold text-center">Bagikan Pengalamanmu</h3>
-      <ReviewFormInputs form={form} setForm={setForm} />
-      {status === 'success' && <p className="text-gold-400 text-xs text-center font-medium">Terima kasih! Ulasan akan tampil setelah diverifikasi.</p>}
-      {status === 'error' && <p className="text-red-400 text-xs text-center font-medium">Mohon lengkapi nama dan ulasan Anda.</p>}
-      <div className="flex gap-3 pt-2">
-        <button type="button" onClick={onCancel} className="flex-1 py-2.5 border border-void-700 text-parchment-300 text-xs tracking-wider uppercase font-semibold rounded hover:bg-void-900">Batal</button>
-        <button type="submit" disabled={status === 'loading'} className="flex-1 py-2.5 bg-gold-500 text-void-950 text-xs tracking-wider uppercase font-semibold rounded hover:bg-gold-400 flex items-center justify-center gap-2">
-          {status === 'loading' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
-          Kirim Ulasan
-        </button>
-      </div>
-    </form>
-  );
-}
-
-function ReviewList({ reviews, loading }: { reviews: Review[]; loading: boolean }) {
-  if (loading) {
-    return (
-      <div className="flex justify-center py-12">
-        <Loader2 className="w-6 h-6 text-gold-400 animate-spin" />
-      </div>
-    );
-  }
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {reviews.map((r) => (
-        <ReviewCard key={r.id} review={r} />
-      ))}
-    </div>
-  );
-}
-
-function mapLocalizedReviews(data: Review[]): Review[] {
-  return data.map((r) => ({
-    ...r,
-    comment: rationalOverrides[r.id] || r.comment,
-  }));
-}
-
-function useReviewsData() {
-  const [reviews, setReviews] = useState<Review[]>(defaultReviews);
-  const [loading, setLoading] = useState(true);
+function useAutoSlide(total: number, intervalMs = 4000) {
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const { data, error } = await supabase.from('reviews').select('*').eq('is_approved', true).order('created_at', { ascending: false });
-        if (!error && data && data.length > 0) {
-          setReviews(mapLocalizedReviews(data as Review[]));
-        }
-      } catch {
-        // Fallback to defaultReviews silently
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchReviews();
-  }, []);
+    if (paused) return;
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev === total - 1 ? 0 : prev + 1));
+    }, intervalMs);
+    return () => clearInterval(timer);
+  }, [paused, total, intervalMs]);
 
-  return { reviews, loading };
+  return { index, setIndex, setPaused };
 }
 
-interface ActionProps {
-  showForm: boolean;
-  form: { name: string; rating: number; comment: string };
-  status: 'idle' | 'loading' | 'success' | 'error';
-  setForm: React.Dispatch<React.SetStateAction<{ name: string; rating: number; comment: string }>>;
-  onSubmit: (e: React.FormEvent) => void;
-  onOpen: () => void;
-  onClose: () => void;
-}
+function ReviewCarousel() {
+  const total = reviewsData.length;
+  const { index, setIndex, setPaused } = useAutoSlide(total);
 
-function ReviewsAction({ showForm, form, status, setForm, onSubmit, onOpen, onClose }: ActionProps) {
-  if (showForm) {
-    return <ReviewForm form={form} status={status} setForm={setForm} onSubmit={onSubmit} onCancel={onClose} />;
-  }
   return (
-    <button onClick={onOpen} className="px-7 py-3 border border-gold-500/70 text-gold-300 text-xs tracking-wider uppercase font-semibold rounded hover:bg-gold-500/10 transition-colors">
-      Tulis Ulasan
-    </button>
+    <div
+      className="max-w-3xl mx-auto"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <div className="min-h-[190px] transition-opacity duration-300">
+        <ReviewCard item={reviewsData[index]} />
+      </div>
+      <ReviewDots current={index} total={total} onSelect={setIndex} />
+    </div>
   );
 }
 
-function useReviewForm() {
-  const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState({ name: '', rating: 5, comment: '' });
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!form.name || !form.comment) { setStatus('error'); return; }
-    setStatus('loading');
-    const { error } = await supabase.from('reviews').insert({ name: form.name, rating: form.rating, comment: form.comment });
-    if (error) { setStatus('error'); return; }
-    setStatus('success');
-    setForm({ name: '', rating: 5, comment: '' });
-    setTimeout(() => { setShowForm(false); setStatus('idle'); }, 2500);
-  };
-
-  return { showForm, setShowForm, form, setForm, status, handleSubmit };
+function GoogleActions() {
+  return (
+    <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+      <a href={MAPS_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 bg-void-950 border border-gold-500/60 text-gold-300 hover:border-gold-400 hover:text-gold-200 text-xs tracking-wider uppercase font-semibold rounded transition-colors shadow-sm">
+        <span>Lihat Semua di Google Maps</span>
+        <ExternalLink className="w-3.5 h-3.5" />
+      </a>
+      <a href={MAPS_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 bg-gold-500 text-void-950 hover:bg-gold-400 text-xs tracking-wider uppercase font-semibold rounded transition-colors shadow-md">
+        <Star className="w-3.5 h-3.5 fill-void-950" />
+        <span>Beri Ulasan di Google</span>
+      </a>
+    </div>
+  );
 }
 
 export default function Reviews() {
-  const { reviews, loading } = useReviewsData();
-  const { showForm, setShowForm, form, setForm, status, handleSubmit } = useReviewForm();
-
   return (
-    <section id="reviews" className="py-16 sm:py-24 lg:py-28 bg-void-900 border-t border-void-800/80">
+    <section id="reviews" className="py-16 sm:py-20 lg:py-24 bg-void-900 border-t border-void-800/80">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <ReviewsHeader />
-        <ReviewList reviews={reviews} loading={loading} />
-        <div className="mt-10 text-center">
-          <ReviewsAction showForm={showForm} form={form} status={status} setForm={setForm} onSubmit={handleSubmit} onOpen={() => setShowForm(true)} onClose={() => setShowForm(false)} />
-        </div>
+        <ReviewCarousel />
+        <GoogleActions />
       </div>
     </section>
   );

@@ -5,7 +5,6 @@ import Menu from '@/components/Menu';
 import Gallery from '@/components/Gallery';
 import Reviews from '@/components/Reviews';
 import Reservation from '@/components/Reservation';
-import Newsletter from '@/components/Newsletter';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 
@@ -20,7 +19,6 @@ export default function App() {
         <Gallery />
         <Reviews />
         <Reservation />
-        <Newsletter />
         <Contact />
       </main>
       <Footer />

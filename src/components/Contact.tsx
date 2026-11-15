@@ -1,4 +1,12 @@
-import { MapPin, Phone, Mail, Clock, Instagram, Facebook, Twitter, ExternalLink } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Instagram, ExternalLink } from 'lucide-react';
+
+function TikTokIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className || 'w-4 h-4'} aria-hidden="true">
+      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.29 0 .58.04.85.12V9.41a6.33 6.33 0 0 0-.85-.06 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V9.08a8.28 8.28 0 0 0 4.84 1.57v-3.45a4.85 4.85 0 0 1-1.07-.51Z" />
+    </svg>
+  );
+}
 
 const contactItems = [
   { icon: MapPin, title: 'Lokasi Kafe', text: 'Jl.Raya Leuwigoong No. 58, Desa/Kelurahan Leuwigoong, Kec. Leuwigoong, Kab. Garut, Jawa Barat 44192', href: 'https://maps.app.goo.gl/x9fGnJ1axZM1LoiS7' },
@@ -43,9 +51,8 @@ function ContactCards() {
 
 function SocialRow() {
   const socials = [
-    { icon: Instagram, href: 'https://instagram.com', label: 'Instagram One Pool and Coffee' },
-    { icon: Facebook, href: 'https://facebook.com', label: 'Facebook One Pool and Coffee' },
-    { icon: Twitter, href: 'https://x.com', label: 'X (Twitter) One Pool and Coffee' },
+    { icon: Instagram, href: 'https://instagram.com/username', label: 'Instagram One Pool and Coffee' },
+    { icon: TikTokIcon, href: 'https://tiktok.com/@username', label: 'TikTok One Pool and Coffee' },
   ];
   return (
     <div className="bg-void-900 border border-void-800 p-5 rounded flex items-center justify-between">
@@ -75,10 +82,11 @@ function MapView() {
   return (
     <div className="relative border border-void-800 rounded overflow-hidden min-h-[360px] bg-void-900 shadow-md">
       <iframe
-        title="Peta Lokasi One Pool and Coffe"
-        src="https://www.openstreetmap.org/export/embed.html?bbox=107.9489%2C-7.0962%2C107.9689%2C-7.0762&amp;layer=mapnik&amp;marker=-7.0861876%2C107.9589061"
-        className="w-full h-full min-h-[360px]"
+        title="Peta Lokasi One Pool and Cafe"
+        src="https://www.openstreetmap.org/export/embed.html?bbox=107.9489%2C-7.0962%2C107.9689%2C-7.0762&layer=mapnik&marker=-7.0861876%2C107.9589061"
+        className="w-full h-full min-h-[360px] border-0"
         loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
       />
       <div className="absolute bottom-3 right-3 bg-void-950/90 border border-gold-500/40 px-3 py-1.5 rounded shadow">
         <a href="https://maps.app.goo.gl/x9fGnJ1axZM1LoiS7" target="_blank" rel="noreferrer" className="text-xs text-gold-300 hover:text-gold-200 font-medium inline-flex items-center gap-1.5">
